@@ -62,7 +62,7 @@ Datacenter: aws-us-east
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address       Load       Tokens       Owns (effective)  Host ID                  Rack
-UN  10.42.246.43  92.79 KiB  8            36.0%             9b5600de-7382-49ce-9684-18631f9288ef  rack1
-UN  10.42.127.17  106 KiB    8            34.3%             14b872e7-81f5-4adb-9930-336eb244b200  rack2
-UN  10.42.139.21  128.99 KiB 8            29.7%             8d8702be-6ec8-4a0f-a328-44e4fed222cf  rack3
+UN  10.42.246.43  82.65 KiB  8            100.0%            9b5600de-7382-49ce-9684-18631f9288ef  rack1
+UN  10.42.127.17  144.32 KiB 8            100.0%            14b872e7-81f5-4adb-9930-336eb244b200  rack2
+UN  10.42.139.21  155.39 KiB 8            100.0%            8d8702be-6ec8-4a0f-a328-44e4fed222cf  rack3
 ```
