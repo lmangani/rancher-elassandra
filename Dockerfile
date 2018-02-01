@@ -51,6 +51,7 @@ RUN mkdir -p /var/lib/cassandra /var/log/cassandra \
   && chmod 750 /var/lib/cassandra /var/log/cassandra
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 VOLUME /var/lib/cassandra
