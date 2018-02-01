@@ -97,7 +97,7 @@ if [ "$1" = 'bin/cassandra' ]; then
 	: ${CASSANDRA_SEEDS:="$CASSANDRA_BROADCAST_ADDRESS"}
 
     echo "-- SEEDS FOUND: $CASSANDRA_SEEDS"
-	sed -ri 's/(- seeds:) "[0-9\.,]+"/\1 "'"$CASSANDRA_SEEDS"'"/' "$CASSANDRA_CONFIG/cassandra.yaml"
+	sed -ri 's/(- seeds:) "[0-9\.,]+"/\1 "'"$CASSANDRA_SEEDS"'"/' "$CASSANDRA_CONF/cassandra.yaml"
 
 	for yaml in \
 		broadcast_address \
@@ -112,18 +112,18 @@ if [ "$1" = 'bin/cassandra' ]; then
 		var="CASSANDRA_${yaml^^}"
 		val="${!var}"
 		if [ "$val" ]; then
-			sed -ri 's/^(# )?('"$yaml"':).*/\2 '"$val"'/' "$CASSANDRA_CONFIG/cassandra.yaml"
+			sed -ri 's/^(# )?('"$yaml"':).*/\2 '"$val"'/' "$CASSANDRA_CONF/cassandra.yaml"
 		fi
 	done
 
 	echo "-- REPLACING SNITCH"
-	sed -ri 's/^endpoint_snitch.*/endpoint_snitch: GossipingPropertyFileSnitch/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
+	sed -ri 's/^endpoint_snitch.*/endpoint_snitch: GossipingPropertyFileSnitch/' "$CASSANDRA_CONF/cassandra-rackdc.properties"
 
 	for rackdc in dc rack; do
 		var="CASSANDRA_${rackdc^^}"
 		val="${!var}"
 		if [ "$val" ]; then
-			sed -ri 's/^('"$rackdc"'=).*/\1 '"$val"'/' "$CASSANDRA_CONFIG/cassandra-rackdc.properties"
+			sed -ri 's/^('"$rackdc"'=).*/\1 '"$val"'/' "$CASSANDRA_CONF/cassandra-rackdc.properties"
 		fi
 	done
 fi
