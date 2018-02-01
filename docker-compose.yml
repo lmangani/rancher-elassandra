@@ -1,0 +1,90 @@
+version: '2'
+services:
+  kibana-elassandra:
+    image: qxip/kibana-elassandra:master
+    environment:
+      ELASTICSEARCH_URL: http://elassandra-seed:9200
+    stdin_open: true
+    tty: true
+    ports:
+    - 15601:5601/tcp
+    labels:
+      io.rancher.container.pull_image: always
+  elassandra-seed-volume:
+    image: busybox
+    entrypoint:
+    - /bin/true
+    network_mode: none
+    volumes:
+    - /var/lib/cassandra
+    - /var/log/cassandra
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+  elassandra-node1-volume:
+    image: busybox
+    entrypoint:
+    - /bin/true
+    network_mode: none
+    volumes:
+    - /var/lib/cassandra
+    - /var/log/cassandra
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+  elassandra-node2-volume:
+    image: busybox
+    entrypoint:
+    - /bin/true
+    network_mode: none
+    volumes:
+    - /var/lib/cassandra
+    - /var/log/cassandra
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+  elassandra-seed:
+    image: qxip/rancher-elassandra:latest
+    environment:
+      CASSANDRA_DC: ranch-elassandra-01
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_RACK: ''
+      RANCHER_ENABLE: 'true'
+      RANCHER_SEED_SERVICE: elassandra-seed
+    tty: true
+    volumes_from:
+    - elassandra-seed-volume
+    labels:
+      io.rancher.sidekicks: elassandra-seed-volume
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+  elassandra-node1:
+    image: qxip/rancher-elassandra:latest
+    environment:
+      CASSANDRA_DC: ranch-elassandra-01
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_RACK: ''
+      RANCHER_ENABLE: 'true'
+      RANCHER_SEED_SERVICE: elassandra-seed
+    tty: true
+    volumes_from:
+    - elassandra-node1-volume
+    labels:
+      io.rancher.sidekicks: elassandra-node1-volume
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+  elassandra-node2:
+    image: qxip/rancher-elassandra:latest
+    environment:
+      CASSANDRA_DC: ranch-elassandra-01
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_RACK: ''
+      RANCHER_ENABLE: 'true'
+      RANCHER_SEED_SERVICE: elassandra-seed
+    tty: true
+    volumes_from:
+    - elassandra-node2-volume
+    labels:
+      io.rancher.sidekicks: elassandra-node2-volume
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
