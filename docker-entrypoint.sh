@@ -3,17 +3,16 @@ set -e
 
 # first arg is `-f` or `--some-option`
 if [ "${1:0:1}" = '-' ]; then
-	set -- bin/cassandra -f "$@"
+	set -- cassandra -f "$@"
 fi
 
 # allow the container to be started with `--user`
-if [ "$1" = 'bin/cassandra' -a "$(id -u)" = '0' ]; then
+if [ "$1" = 'cassandra' -a "$(id -u)" = '0' ]; then
 	chown -R cassandra /var/lib/cassandra /var/log/cassandra "$CASSANDRA_CONF"
 	exec gosu cassandra "$BASH_SOURCE" "$@"
 fi
 
-
-if [ "$1" = 'bin/cassandra' ]; then
+if [ "$1" = 'cassandra' ]; then
 	: ${CASSANDRA_RPC_ADDRESS='0.0.0.0'}
 
 	if [ "$RANCHER_ENABLE" = 'true' ]; then
